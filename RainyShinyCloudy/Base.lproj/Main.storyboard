@@ -84,7 +84,7 @@
                                 <rect key="frame" x="0.0" y="300" width="414" height="436"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="weatherCell" focusStyle="custom" rowHeight="90" id="VVU-4T-za2">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="0.0" reuseIdentifier="weatherCell" focusStyle="custom" rowHeight="90" id="VVU-4T-za2" customClass="WeatherCell" customModule="RainyShinyCloudy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="90"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="VVU-4T-za2" id="S0X-mu-4yN">
@@ -149,6 +149,13 @@
                                                 <constraint firstItem="ACv-Fp-JSN" firstAttribute="top" secondItem="S0X-mu-4yN" secondAttribute="topMargin" constant="10" id="qHQ-h0-bFs"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="forecastImage" destination="Ogs-mp-g7i" id="kEy-Ai-cAb"/>
+                                            <outlet property="labelDate" destination="e0x-oi-uZe" id="mTF-fb-fmy"/>
+                                            <outlet property="labelForecast" destination="77T-v7-vbB" id="ebA-K0-ntk"/>
+                                            <outlet property="labelTempHi" destination="l6D-Dd-6TE" id="EAh-Fd-B7k"/>
+                                            <outlet property="labelTempLo" destination="0Bf-Xw-dyn" id="rLW-hl-tfy"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>

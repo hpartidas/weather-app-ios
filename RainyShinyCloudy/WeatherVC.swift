@@ -18,6 +18,7 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var tableview: UITableView!
     
     var currentWeather: Weather!
+    var forecasts: [Forecast] = [Forecast]()
     
     override func viewDidLoad() {
         super.viewDidLoad()

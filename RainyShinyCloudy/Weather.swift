@@ -56,6 +56,7 @@ class Weather {
             _imageUrl = newValue
         }
     }
+    var forecasts: [Forecast] = [Forecast]()
     
 //    init(city: String, weather: String) {
 //        self.cityName = city
@@ -65,7 +66,7 @@ class Weather {
 //    }
     
     func downloadWeatherDetails(completed: @escaping () -> ()) {
-        let currentWeatherUrl = URL(string: "\(BASE_URL)\(CURRENT_WEATHER_ENDPOINT)?key=\(API_KEY)&q=-24,35")!
+        let currentWeatherUrl = URL(string: "\(BASE_URL)\(CURRENT_WEATHER_ENDPOINT)?key=\(API_KEY)&q=-24,35&days=6")!
         
         Alamofire.request(currentWeatherUrl).responseJSON { response in
             let result = response.result
@@ -112,6 +113,44 @@ class Weather {
             guard let imageUrl = condition["icon"] as? String else {
                 // error handling
                 return
+            }
+            
+            guard let forecasts = dictionary["forecast"] as? Dictionary<String, AnyObject> else {
+                // error habdling
+                return
+            }
+            
+            guard let forecastDay = forecasts["forecastday"] as? [Dictionary<String, AnyObject>] else {
+                return
+            }
+            
+            for i in 1 ..< 6 {
+                guard let dow = forecastDay[i]["date"] as? String else {
+                    return
+                }
+                
+                guard let temp = forecastDay[i]["day"] as? Dictionary<String, AnyObject> else {
+                    return
+                }
+                
+                guard let tempHi = temp["maxtemp_c"] as? Double else {
+                    return
+                }
+                
+                guard let tempLo = temp["mintemp_c"] as? Double else {
+                    return
+                }
+                
+                guard let condition = temp["condition"] as? Dictionary<String, AnyObject> else {
+                    return
+                }
+                
+                guard let forecast = condition["text"] as? String else {
+                    return
+                }
+                
+                self.forecasts.append(Forecast(dayOfTheWeek: dow, forecast: forecast, tempHi: tempHi, tempLo: tempLo))
+                
             }
             
             self.cityName = name.capitalized
