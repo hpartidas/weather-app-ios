@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import CoreLocation
 
-class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
 
     @IBOutlet weak var labelDate: UILabel!
     @IBOutlet weak var labelTemp: UILabel!
@@ -17,11 +18,21 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     @IBOutlet weak var imageForecast: UIImageView!
     @IBOutlet weak var tableview: UITableView!
     
+    let locationManager = CLLocationManager()
+    var currentLocation: CLLocation!
+    
     var currentWeather: Weather!
     var forecasts: [Forecast] = [Forecast]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        locationAuthStatus()
+        
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startMonitoringSignificantLocationChanges()
+        
         
         tableview.delegate = self
         tableview.dataSource = self
@@ -32,6 +43,18 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             self.forecasts = self.currentWeather.forecasts
             self.tableview.reloadData()
             self.updateUI()
+        }
+    }
+    
+    func locationAuthStatus() {
+        if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
+            currentLocation = locationManager.location
+            Location.sharedInstance.latitude = currentLocation.coordinate.latitude
+            Location.sharedInstance.longitude = currentLocation.coordinate.longitude
+            print("\(Location.sharedInstance.latitude) \(Location.sharedInstance.longitude)")
+        } else {
+            locationManager.requestWhenInUseAuthorization()
+            locationAuthStatus()
         }
     }
     

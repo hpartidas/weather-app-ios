@@ -66,7 +66,7 @@ class Weather {
 //    }
     
     func downloadWeatherDetails(completed: @escaping () -> ()) {
-        let currentWeatherUrl = URL(string: "\(BASE_URL)\(CURRENT_WEATHER_ENDPOINT)?key=\(API_KEY)&q=-24,35&days=6")!
+        let currentWeatherUrl = URL(string: "\(BASE_URL)\(CURRENT_WEATHER_ENDPOINT)?key=\(API_KEY)&q=\(Location.sharedInstance.latitude!),\(Location.sharedInstance.longitude!)&days=6")!
         
         Alamofire.request(currentWeatherUrl).responseJSON { response in
             let result = response.result
