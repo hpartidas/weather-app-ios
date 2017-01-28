@@ -70,7 +70,7 @@ class Weather {
         
         Alamofire.request(currentWeatherUrl).responseJSON { response in
             let result = response.result
-//            print("\(response)")
+            
             guard let dictionary = result.value as? Dictionary<String, AnyObject> else {
                 // this is bad!
                 return
@@ -124,7 +124,7 @@ class Weather {
                 return
             }
             
-            for i in 1 ..< 6 {
+            for i in 0 ..< 6 {
                 guard let dow = forecastDay[i]["date"] as? String else {
                     return
                 }

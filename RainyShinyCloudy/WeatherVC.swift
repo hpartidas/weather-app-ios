@@ -29,6 +29,8 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         currentWeather = Weather()
         
         currentWeather.downloadWeatherDetails {
+            self.forecasts = self.currentWeather.forecasts
+            self.tableview.reloadData()
             self.updateUI()
         }
     }
@@ -38,11 +40,25 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return forecasts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableview.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath)
+        guard let cell = tableview.dequeueReusableCell(withIdentifier: "weatherCell", for: indexPath) as? WeatherCell else {
+            return WeatherCell()
+        }
+        
+        if !isValidForecast() {
+            return WeatherCell()
+        }
+        
+        guard let forecast = forecasts[indexPath.row] as? Forecast else {
+            let forecast = Forecast(dayOfTheWeek: "",forecast: "",tempHi: 0.0,tempLo: 0.0)
+            cell.configureCell(forecast: forecast)
+            return cell
+        }
+        
+        cell.configureCell(forecast: forecast)
         
         return cell
     }
@@ -54,6 +70,10 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         labelDate.text = currentWeather.date
         let image = UIImage(named: currentWeather.weatherType.capitalized)
         imageForecast.image = image
+    }
+    
+    func isValidForecast() -> Bool {
+        return forecasts.count > 0 ? true : false
     }
 }
 
